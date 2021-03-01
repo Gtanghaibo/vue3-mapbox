@@ -1,0 +1,29 @@
+{
+  "name": "vue3-mapbox",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "build:es": "rollup -c ./rollup.config.es.js"
+  },
+  "main": "dist/vue-mapbox.js",
+  "module": "src/main.js",
+  "publishConfig": {
+    "registry": "https://artifactory.tusimple.ai/artifactory/api/npm/npm-infra-common/"
+  },
+  "dependencies": {
+    "@turf/circle": "^6.3.0",
+    "map-promisified": "^0.4.0",
+    "mapbox-gl": "^2.1.1",
+    "vue": "^3.0.5",
+    "vue-mapbox-geocoder": "^0.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.1.4",
+    "@vue/compiler-sfc": "^3.0.5",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "vite": "^2.0.1"
+  }
+}
