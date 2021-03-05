@@ -1,6 +1,7 @@
 import layerEvents from "../../lib/layerEvents";
 import mixin from "./layerMixin";
 
+import {h} from 'vue'
 export default {
   name: "GeojsonLayer",
   mixins: [mixin],
@@ -8,7 +9,7 @@ export default {
   computed: {
     getSourceFeatures() {
       return filter => {
-        if (this.map) {
+        if (this.root.map) {
           return this.root.map.querySourceFeatures(this.sourceId, { filter });
         }
         return null;
@@ -17,7 +18,7 @@ export default {
 
     getRenderedFeatures() {
       return (geometry, filter) => {
-        if (this.map) {
+        if (this.root.map) {
           return this.root.map.queryRenderedFeatures(geometry, {
             layers: [this.layerId],
             filter
@@ -96,13 +97,30 @@ export default {
         },
         { deep: true }
       );
+      this.$watch(
+        'layer.layout',
+        (value) => {
+          console.log('visibility', value)
+        },
+        {deep: true}
+      )
     }
     this.$_deferredMount();
+    setInterval(() => {
+      // console.log(this.layer.layout)
+    }, 1000)
+  },
+
+  render() {
+    return h(
+      'div',
+      [h('div', [this.layer.layout.visibility])]
+    )
   },
 
   methods: {
     $_deferredMount() {
-      // this.map = payload.map;
+      // this.root.map = payload.map;
       this.root.map.on("dataloading", this.$_watchSourceLoading);
       if (this.source) {
         const source = {
@@ -144,21 +162,21 @@ export default {
     },
 
     setFeatureState(featureId, state) {
-      if (this.map) {
+      if (this.root.map) {
         const params = { id: featureId, source: this.source };
         return this.root.map.setFeatureState(params, state);
       }
     },
 
     getFeatureState(featureId) {
-      if (this.map) {
+      if (this.root.map) {
         const params = { id: featureId, source: this.source };
         return this.root.map.getFeatureState(params);
       }
     },
 
     removeFeatureState(featureId, sourceLayer, key) {
-      if (this.map) {
+      if (this.root.map) {
         const params = {
           id: featureId,
           source: this.source,

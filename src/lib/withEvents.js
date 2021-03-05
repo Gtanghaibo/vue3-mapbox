@@ -8,10 +8,18 @@ export default {
      */
     $_emitEvent(name, data = {}) {
       this.$emit(name, {
-        map: (this.map || this.map),
+        map: (this.map || this.root.map),
+        mapBox: (this.mapBox || this.root.mapBox),
         component: this,
         ...data
-      });
+      })
+      // NOTE: for v-model
+      // this.$emit(`update:${name}`, {
+      //   map: (this.map || this.root.map),
+      //   mapBox: (this.mapBox || this.root.mapBox),
+      //   component: this,
+      //   ...data
+      // });
     },
 
     /**
@@ -20,7 +28,7 @@ export default {
      * @param {Object} event
      */
     $_emitMapEvent(event, data = {}) {
-      this.$_emitEvent(event.type, { mapboxEvent: event, ...data });
+      this.$_emitEvent(event.type, { mapBoxEvent: event, ...data });
     }
   }
 };

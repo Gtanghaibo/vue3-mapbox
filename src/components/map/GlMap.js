@@ -38,7 +38,7 @@ export default {
       root: this
     };
   },
-  emits: ['update:center', 'update:bounds', 'update:zoom', 'update:zoomend'],
+  emits: ['update:center', 'update:bounds', 'update:zoom', 'update:zoomend',],
 
   data() {
     return {
@@ -74,34 +74,24 @@ export default {
       return this.map ? this.map.listImages() : null;
     }
   },
-  watch: {
-    propsIsUpdating: {
-      handler(value,old) {
-        // debugger
-        console.log(value)
-      },
-      deep: true
-    }
-  },
 
   created() {
     this.map = null;
-   
     this.propsIsUpdating = {};
     this.$_containerVNode = null;
-    this.mapboxPromise = this.mapboxGl
+    this.mapBoxPromise = this.mapboxGl
       ? Promise.resolve(this.mapboxGl)
       : import("mapbox-gl");
   },
 
   mounted() {
-    this.$_loadMap().then(map => {
+    this.$_loadMap().then(({map, mapBox} )=> {
       this.map = map;
       if (
         this.RTLTextPluginUrl !== undefined &&
-        this.mapbox.getRTLTextPluginStatus() !== "loaded"
+        this.mapBox.getRTLTextPluginStatus() !== "loaded"
       ) {
-        this.mapbox.setRTLTextPlugin(
+        this.mapBox.setRTLTextPlugin(
           this.RTLTextPluginUrl,
           this.$_RTLTextPluginError
         );
@@ -113,7 +103,7 @@ export default {
       this.initial = false;
       this.initialized = true;
 
-      this.$emit("load", { map, component: this });
+      this.$emit("load", { map, mapBox, component: this });
     });
   },
 

@@ -2,7 +2,6 @@ export default {
   methods: {
     $_updateSyncedPropsFabric(prop, data) {
       return () => {
-        debugger
         this.propsIsUpdating[prop] = true;
       
         let info = typeof data === "function" ? data() : data;
@@ -19,6 +18,11 @@ export default {
         },
         {
           events: ["zoomend"],
+          prop: "zoomend",
+          getter: this.map.getZoom.bind(this.map)
+        },
+        {
+          events: ["zoom"],
           prop: "zoom",
           getter: this.map.getZoom.bind(this.map)
         },
@@ -43,10 +47,11 @@ export default {
             return newBounds;
           }
         }
+        // TODO: add many events
       ];
       syncedProps.forEach(({ events, prop, getter }) => {
         events.forEach(event => {
-          if (this.$attrs[`onUpdate:${prop}`]) {
+          if (this.$attrs[`onUpdate:${prop}`] || prop in this.$props) {
             this.map.on(event, this.$_updateSyncedPropsFabric(prop, getter));
           }
         });
@@ -54,16 +59,16 @@ export default {
     },
 
     $_loadMap() {
-      return this.mapboxPromise.then(mapbox => {
-        this.mapbox = mapbox.default ? mapbox.default : mapbox;
+      return this.mapBoxPromise.then(mapBox => {
+        this.mapBox = mapBox.default ? mapBox.default : mapBox;
         return new Promise(resolve => {
-          if (this.accessToken) this.mapbox.accessToken = this.accessToken;
-          const map = new this.mapbox.Map({
+          if (this.accessToken) this.mapBox.accessToken = this.accessToken;
+          const map = new this.mapBox.Map({
             ...this.$props,
             container: this.$refs.container,
             style: this.mapStyle
           });
-          map.on("load", () => resolve(map));
+          map.on("load", () => resolve({map, mapBox}));
         });
       });
     },

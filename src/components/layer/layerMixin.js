@@ -99,7 +99,7 @@ export default {
         { deep: true }
       );
     }
-
+    console.log('layer',this.layer)
     if (this.layer.layout) {
       this.$watch(
         "layer.layout",
@@ -152,6 +152,7 @@ export default {
 
   methods: {
     $_emitLayerMapEvent(event) {
+      console.log(event)
       return this.$_emitMapEvent(event, { layerId: this.layerId });
     },
     $_filterPropsEvents() {

@@ -3,17 +3,22 @@
     <!-- <canvas id="myCanvas" width="100" height="100">
 
     </canvas> -->
-    <mgl-map
+    <mgl-map 
       v-model:center="center"
       :accessToken="accessToken"
       :mapStyle="mapStyle"
-      v-model:zoom="zoom"
-      :hash="true"
-      @zoomend="handleEvent"
+      :zoom="zoom"
+      v-model:zoomend="zoom"
+      @zoomend="handleZoom"
+      @zoom="handleZoom"
       @load="handleLoad"
+      @click="handleLoad"
       :lazy="true"
     >
+
+    <template v-for="i in 1" >
       <mgl-marker
+      :key="i"
         v-if="markerShowed"
         v-model:coordinates="markerCoordinates"
         :draggable="true"
@@ -29,10 +34,6 @@
         <div>
        <span style="display: inline-block;width: 100px; height: 20px; color: white; background: green" :style="{color: truckColor}">Tusimple Truck</span>
        </div>
-       <mgl-popup>
-          <span>I'am POPUP!</span>
-          <!-- <popup-comp /> -->
-        </mgl-popup>
         <!-- TODO multi elements -->
        <!-- <h2>Marker!</h2> -->
        <!-- <div style="" >Tusimple Truck</div> -->
@@ -43,6 +44,16 @@
         <h2> the marker text</h2>
       </template>
     </mgl-marker>
+    </template>
+    <mgl-geojson-layer
+        sourceId="radius"
+        layerId="radius"
+        :layer="geojsonLayer"
+        v-model:source="geojsonSource"
+        @click="layerClickHandler"
+        @move="handleMove"
+        ref="layerRef"
+      />
     </mgl-map>
   </div>
 </template>
@@ -108,6 +119,7 @@ export default {
       defaultSearch: "Bodhgaya",
       truckColor: 'red',
       rotation: 0,
+      visible: 'visible',
       markerCoordinates: [116.46494, 39.95402, ],
       markerCoordinates2: [60, 60],
       center: [116.46494, 39.95402, ],
@@ -121,6 +133,9 @@ export default {
         paint: {
           "fill-color": "blue",
           "fill-opacity": 0.6
+        },
+        layout: {
+          visibility: 'visible',
         }
       },
       canvasSource: {
@@ -250,18 +265,18 @@ export default {
     //   this.markerShowed = true
     // }, 5000)
     let count = 0
-    setInterval(() => {
-      this.markerCoordinates = [this.markerCoordinates[0] + 0.00001,this.markerCoordinates[1] ]
-      count++
-      if(count === 100) {
-        this.truckColor = this.truckColor === 'white' ? 'red' : 'white'
-        if(this.rotation > 60) {
-          this.rotation = 0
-        }
-        this.rotation = this.rotation + 6
-        count = 0
-      }
-    },17)
+    // setInterval(() => {
+    //   this.markerCoordinates = [this.markerCoordinates[0] + 0.00001,this.markerCoordinates[1] ]
+    //   count++
+    //   if(count === 100) {
+    //     this.truckColor = this.truckColor === 'white' ? 'red' : 'white'
+    //     if(this.rotation > 60) {
+    //       this.rotation = 0
+    //     }
+    //     this.rotation = this.rotation + 6
+    //     count = 0
+    //   }
+    // },17)
   },
 
   updated() {
@@ -269,8 +284,15 @@ export default {
   },
 
   methods: {
+    handleMove(event) {
+      console.log(event)
+      
+    },
     handleSearch(event) {
       // console.log(event)
+    },
+    handleZoom(event) {
+      console.log(this.zoom)
     },
 
     catchLayerAdded(event) {
@@ -288,12 +310,12 @@ export default {
       // console.log(event)
     },
 
-    async handleLoad(event) {
-      console.log("MAP: ", event);
+    async handleLoad({map,mapBox}) {
+      console.log("MAP: ", map, mapBox);
 
-      const actions = event.component.actions
+      // const actions = event.component.actions
       // const actions = promisify(event.map);
-      this.checkAsyncActions(actions, event.map)
+      // this.checkAsyncActions(actions, event.map)
 
       // event.map.addSource('cluster', this.geojsonEartchQuakesSource)
 
@@ -322,6 +344,12 @@ export default {
     },
 
     async layerClickHandler(event) {
+      if(this.geojsonLayer.layout.visibility === 'visible') {
+        this.geojsonLayer.layout.visibility = 'none'
+      } else {
+        this.geojsonLayer.layout.visibility = 'visible'
+      }
+      console.log(this.geojsonLayer.layout.visibility)
       console.log("Evant: ", event)
       console.log("Evant features: ", event.mapboxEvent.features)
     },

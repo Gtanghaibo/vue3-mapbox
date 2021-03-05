@@ -23,12 +23,9 @@ const watchers = {
     this.map.repaint = next;
   },
   zoom(next) {
-    console.log('zoom')
     this.map.setZoom(next);
   },
   center(next, pre) {
-    debugger
-    console.log(next,pre )
     this.map.setCenter(next);
   },
   bearing(next) {
@@ -44,24 +41,12 @@ const watchers = {
 
 function watcher(prop, callback, next, prev) {
   if (this.initial) return;
-  debugger
-  if (this.$attrs[`onUpdate:${prop}`]) {
-    debugger
-    if (this.propsIsUpdating[prop]) {
-      // this._watcher.active = false;
-      // this.$nextTick(() => {
-      //   this._watcher.active = true;
-      // });
-    } else {
-      // this._watcher.active = true;
-      callback(next, prev);
-    }
-    debugger
-    this.propsIsUpdating[prop] = false;
+  if(this.propsIsUpdating[prop]) {
+    this.propsIsUpdating[prop] = false
+    return
   } else {
-    callback(next, prev);
+    callback(next, prev)
   }
-  // callback(next, prev)
 }
 
 function makeWatchers() {

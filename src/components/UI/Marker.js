@@ -99,7 +99,7 @@ export default {
         // markerOptions.element = this.$slots.marker()[0].el;
         markerOptions.element = this.$el.children[0]
       }
-      this.marker = new this.root.mapbox.Marker(markerOptions);
+      this.marker = new this.root.mapBox.Marker(markerOptions);
   
       if (this.$attrs["onUpdate:coordinates"]) {
         this.marker.on("dragend", event => {

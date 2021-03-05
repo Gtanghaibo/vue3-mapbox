@@ -38,7 +38,7 @@ export default {
   },
 
   created() {
-    const GeolocateControl = this.root.mapbox.GeolocateControl;
+    const GeolocateControl = this.root.mapBox.GeolocateControl;
     this.control = new GeolocateControl(this.$props);
     this.$_addControl();
     this.$_bindSelfEvents(Object.keys(geolocationEvents), this.control);

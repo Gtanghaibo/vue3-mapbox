@@ -123,6 +123,10 @@ export default {
     type: Number,
     default: 0
   },
+  zoomend: {
+    type: Number,
+    default: 0
+  },
   bearing: {
     type: Number,
     default: 0

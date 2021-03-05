@@ -143,7 +143,7 @@ export default {
   },
 
   created() {
-    this.popup = new this.root.mapbox.Popup(this.$props);
+    this.popup = new this.root.mapBox.Popup(this.$props);
   },
 
   mounted() {
@@ -160,7 +160,7 @@ export default {
 
   methods: {
     $_addPopup() {
-      this.popup = new this.root.mapbox.Popup(this.$props);
+      this.popup = new this.root.mapBox.Popup(this.$props);
       if (this.coordinates !== undefined) {
         this.popup.setLngLat(this.coordinates);
       }

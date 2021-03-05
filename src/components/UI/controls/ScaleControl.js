@@ -28,7 +28,7 @@ export default {
   },
 
   created() {
-    this.control = new this.root.mapbox.ScaleControl(this.$props);
+    this.control = new this.root.mapBox.ScaleControl(this.$props);
     this.$_addControl();
   }
 };

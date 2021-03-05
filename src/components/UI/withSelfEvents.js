@@ -1,7 +1,6 @@
 export default {
   methods: {
     $_emitSelfEvent(event, data = {}) {
-      debugger
       this.$_emitMapEvent(event, { control: this.control, ...data });
     },
     /** Bind events for markers, popups and controls.
