@@ -12,7 +12,7 @@
       @zoomend="handleZoom"
       @zoom="handleZoom"
       @load="handleLoad"
-      @click="handleLoad"
+      @click="handleClick"
       :lazy="true"
     >
 
@@ -284,6 +284,9 @@ export default {
   },
 
   methods: {
+    handleClick(e) {
+      console.log('click', e)
+    },
     handleMove(event) {
       console.log(event)
       

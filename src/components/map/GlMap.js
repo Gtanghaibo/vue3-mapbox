@@ -9,7 +9,7 @@ import {h, toRef} from 'vue'
 
 export default {
   name: "GlMap",
-
+  inheritAttrs: false,
   mixins: [withWatchers, withAsyncActions, withPrivateMethods, withEvents],
 
   props: {
