@@ -5,6 +5,7 @@ import GeolocateControl from "./components/UI/controls/GeolocateControl";
 import FullscreenControl from "./components/UI/controls/FullscreenControl";
 import AttributionControl from "./components/UI/controls/AttributionControl";
 import ScaleControl from "./components/UI/controls/ScaleControl";
+import DrawControl from "./components/UI/controls/DrawControl";
 import Marker from "./components/UI/Marker";
 import Popup from "./components/UI/Popup";
 
@@ -39,6 +40,8 @@ export const MglGeolocateControl = GeolocateControl;
 export const MglFullscreenControl = FullscreenControl;
 export const MglAttributionControl = AttributionControl;
 export const MglScaleControl = ScaleControl;
+
+export const MglDrawControl = DrawControl;
 
 export const MglGeojsonLayer = GeojsonLayer;
 export const MglImageLayer = ImageLayer;

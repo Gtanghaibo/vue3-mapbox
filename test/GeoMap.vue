@@ -15,8 +15,8 @@
       @click="handleClick"
       :lazy="true"
     >
-
-    <template v-for="i in 1" >
+      <MglDrawControl  @added="handleAddControl" v-if="activeDrawRegion" ></MglDrawControl>
+    <!-- <template v-for="i in 1" >
       <mgl-marker
       :key="i"
         v-if="markerShowed"
@@ -34,9 +34,6 @@
         <div>
        <span style="display: inline-block;width: 100px; height: 20px; color: white; background: green" :style="{color: truckColor}">Tusimple Truck</span>
        </div>
-        <!-- TODO multi elements -->
-       <!-- <h2>Marker!</h2> -->
-       <!-- <div style="" >Tusimple Truck</div> -->
       </template>
       </mgl-marker>
     <mgl-marker :coordinates="markerCoordinates" :offset="[50,50]">
@@ -44,15 +41,10 @@
         <h2> the marker text</h2>
       </template>
     </mgl-marker>
-    </template>
-    <mgl-geojson-layer
-        sourceId="radius"
-        layerId="radius"
-        :layer="geojsonLayer"
-        v-model:source="geojsonSource"
-        @click="layerClickHandler"
-        @move="handleMove"
-        ref="layerRef"
+    </template> -->
+
+     <npc
+        v-model:coordinates="markerCoordinates"
       />
     </mgl-map>
   </div>
@@ -64,6 +56,7 @@ import Mapbox from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import PopupWrapper from "./PopupWrapper.vue"
 // import MglGeocoderControl from "vue-mapbox-geocoder";
+import Npc from './Npc.vue'
 
 import {
   MglMap,
@@ -78,11 +71,14 @@ import {
   MglVectorLayer,
   MglCanvasLayer,
   MglRasterLayer,
-  MglImageLayer
+  MglImageLayer,
+  MglDrawControl,
 } from "../src/main";
 // import MglGeocoderControl from "vue-mapbox-geocoder";
 import circle from "@turf/circle";
 import promisify from "map-promisified";
+
+import temp from './temp.vue'
 
 export default {
   name: "GeoMap",
@@ -95,6 +91,7 @@ export default {
     MglNavigationControl,
     // MglGeocoderControl,
     MglScaleControl,
+    MglDrawControl,
     MglMarker,
     MglPopup,
     MglGeojsonLayer,
@@ -102,7 +99,9 @@ export default {
     MglImageLayer,
     MglVectorLayer,
     MglRasterLayer,
-    PopupWrapper
+    PopupWrapper,
+    Npc,
+    temp
   },
   watch: {
     center(value) {
@@ -147,107 +146,17 @@ export default {
       bounds: [[-79, 43], [-73, 45]],
       popopShowed: false,
 
-      geojsonEartchQuakesSource: {
-        data: "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson",
-        cluster: true,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
-        clusterRadius: 50 ,// Radius of each cluster when clustering points (
-          type: 'geojson',
-      },
-
-      clusterLayers: [
-        {
-          id: "clusters",
-          type: "circle",
-          source: "earthquakes",
-          filter: ["has", "point_count"],
-          paint: {
-            // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
-            // with three steps to implement three types of circles:
-            //   * Blue, 20px circles when point count is less than 100
-            //   * Yellow, 30px circles when point count is between 100 and 750
-            //   * Pink, 40px circles when point count is greater than or equal to 750
-            "circle-color": [
-              "step",
-              ["get", "point_count"],
-              "#51bbd6",
-              100,
-              "#f1f075",
-              750,
-              "#f28cb1"
-            ],
-            "circle-radius": [
-              "step",
-              ["get", "point_count"],
-              20,
-              100,
-              30,
-              750,
-              40
-            ]
-          }
-        },
-        {
-          id: "cluster-count",
-          type: "symbol",
-          source: "earthquakes",
-          filter: ["has", "point_count"],
-          layout: {
-            "text-field": "{point_count_abbreviated}",
-            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-            "text-size": 12
-          }
-        },
-        {
-          id: "unclustered-point",
-          type: "circle",
-          source: "earthquakes",
-          filter: ["!", ["has", "point_count"]],
-          paint: {
-            "circle-color": "#11b4da",
-            "circle-radius": 4,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": "#fff"
-          }
-        }
-      ],
-
-      vectorLayer: {
-        id: "terrain-data",
-        type: "line",
-        "source-layer": "contour",
-        layout: {
-          "line-join": "round",
-          "line-cap": "round"
-        },
-        paint: { "line-color": "#ff69b4", "line-width": 1 }
-      },
-      vectorSource: {
-        url: "mapbox://mapbox.mapbox-terrain-v2"
-      },
-      imageSource: {
-        coordinates: [
-            [-76, 39],
-            [-75, 39],
-            [-75, 38],
-            [-76, 38]
-        ],
-        url: "https://vignette.wikia.nocookie.net/mariofanon/images/a/af/Tux.png/revision/latest?cb=20170823022812"
-      },
-      imageLayer: {
-        type: "raster"
-      },
-      rasterSource: {
-        url: "mapbox://mapbox.streets"
-      },
-      rasterLayer: {
-        type: "raster"
-      }
+      activeDrawRegion: true,
     };
   },
 
   created() {
     this.mapbox = Mapbox;
+    setInterval(() => {
+        this.activeDrawRegion = !this.activeDrawRegion
+        console.log('on remove')
+        // e.control.onRemove()
+      }, 10000)
   },
 
   mounted() {
@@ -265,18 +174,18 @@ export default {
     //   this.markerShowed = true
     // }, 5000)
     let count = 0
-    // setInterval(() => {
-    //   this.markerCoordinates = [this.markerCoordinates[0] + 0.00001,this.markerCoordinates[1] ]
-    //   count++
-    //   if(count === 100) {
-    //     this.truckColor = this.truckColor === 'white' ? 'red' : 'white'
-    //     if(this.rotation > 60) {
-    //       this.rotation = 0
-    //     }
-    //     this.rotation = this.rotation + 6
-    //     count = 0
-    //   }
-    // },17)
+    setInterval(() => {
+      this.markerCoordinates = [this.markerCoordinates[0] + 0.00001,this.markerCoordinates[1] ]
+      count++
+      if(count === 100) {
+        this.truckColor = this.truckColor === 'white' ? 'red' : 'white'
+        if(this.rotation > 60) {
+          this.rotation = 0
+        }
+        this.rotation = this.rotation + 6
+        count = 0
+      }
+    },100)
   },
 
   updated() {
@@ -284,6 +193,18 @@ export default {
   },
 
   methods: {
+    handleAddControl(e) {
+      console.log('control', e.control)
+      e.control.changeMode('draw_polygon')
+      this.map.on('draw.create', (e) => {
+        console.log('draw.create', e)
+      })
+      this.map.on("draw.update", (e) => {
+        console.log('draw update', e)
+      })
+      
+      // e.control.onAdd(this.map)
+    }, 
     handleClick(e) {
       console.log('click', e)
     },
@@ -315,6 +236,7 @@ export default {
 
     async handleLoad({map,mapBox}) {
       console.log("MAP: ", map, mapBox);
+      this.map = map
 
       // const actions = event.component.actions
       // const actions = promisify(event.map);

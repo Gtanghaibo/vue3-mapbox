@@ -5,7 +5,7 @@ import options from "./options";
 import withWatchers from "./mixins/withWatchers";
 import withPrivateMethods from "./mixins/withPrivateMethods";
 import withAsyncActions from "./mixins/withAsyncActions";
-import {h, toRef} from 'vue'
+import {h, ref, toRef} from 'vue'
 
 export default {
   name: "GlMap",
@@ -35,6 +35,8 @@ export default {
         // return toRef(self,'actions');
         return null
       },
+      // @ts-ignore
+      initialized: toRef(self,'initialized'),
       root: this
     };
   },
