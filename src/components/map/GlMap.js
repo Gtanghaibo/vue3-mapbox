@@ -109,7 +109,7 @@ export default {
     });
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     this.$nextTick(() => {
       if (this.map) this.map.remove();
     });

@@ -13,7 +13,7 @@ export default {
     }
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.map && this.control) {
       this.root.map.removeControl(this.control);
     }

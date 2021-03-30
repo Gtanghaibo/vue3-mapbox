@@ -151,7 +151,7 @@ export default {
     this.initial = false;
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.map) {
       this.popup.remove();
       this.$_emitEvent("removed");
