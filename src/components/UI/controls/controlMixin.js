@@ -27,7 +27,7 @@ export default {
         this.$_emitEvent("error", { error: err });
         return;
       }
-      this.$_emitEvent("added", { control: this.control });
+      this.$_emitEvent("added", { control: this.control , drawType: this.drawType || ''});
     }
   },
 

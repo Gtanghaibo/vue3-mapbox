@@ -15,7 +15,7 @@
       @click="handleClick"
       :lazy="true"
     >
-      <MglDrawControl  @added="handleAddControl" v-if="activeDrawRegion" ></MglDrawControl>
+      <MglDrawControl  @added="handleAddControl" v-if="activeDrawRegion" :draw-type="'draw_line_string'" ></MglDrawControl>
     <!-- <template v-for="i in 1" >
       <mgl-marker
       :key="i"
@@ -53,6 +53,8 @@
 
 <script>
 import Mapbox from "mapbox-gl";
+import DrawLineString from './drawLineMode'
+import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import "mapbox-gl/dist/mapbox-gl.css";
 import PopupWrapper from "./PopupWrapper.vue"
 // import MglGeocoderControl from "vue-mapbox-geocoder";
@@ -80,6 +82,13 @@ import promisify from "map-promisified";
 
 import temp from './temp.vue'
 
+const drawControlConfig = {
+	modes: Object.assign(MapboxDraw.modes, {
+		draw_line_string: DrawLineString,
+	}),
+  
+}
+
 export default {
   name: "GeoMap",
 
@@ -101,7 +110,7 @@ export default {
     MglRasterLayer,
     PopupWrapper,
     Npc,
-    temp
+    temp,
   },
   watch: {
     center(value) {
@@ -147,6 +156,7 @@ export default {
       popopShowed: false,
 
       activeDrawRegion: true,
+      drawControlConfig,
     };
   },
 
@@ -194,8 +204,9 @@ export default {
 
   methods: {
     handleAddControl(e) {
-      console.log('control', e.control)
-      e.control.changeMode('draw_polygon')
+      console.log('control type', e.control ,e.drawType )
+      
+      e.control.changeMode(e.drawType)
       this.map.on('draw.create', (e) => {
         console.log('draw.create', e)
       })

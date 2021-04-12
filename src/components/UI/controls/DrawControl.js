@@ -7,13 +7,25 @@ export default {
   name: "DrawControl",
   mixins: [controlMixin],
   props: {
-
+    modes: {
+      type: Object,
+      default: null
+    },
+    drawType: {
+      type: String,
+      default: 'draw_polygon'
+    }
   },
   beforeUnmount() {
     this.control.onRemove()
   },
   created() {
-    this.control = new MapboxDraw(this.$props);
+    let drawConfig = Object.assign({}, this.$props)
+    if(!this.modes) {
+      delete drawConfig.modes 
+    }
+    delete drawConfig.drawType
+    this.control = new MapboxDraw(drawConfig);
     this.$_addControl();
   },
 };
