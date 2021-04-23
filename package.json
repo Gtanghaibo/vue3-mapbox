@@ -1,6 +1,6 @@
 {
   "name": "vue3-mapbox",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,14 +13,14 @@
     "registry": "https://artifactory.tusimple.ai/artifactory/api/npm/npm-infra-common/"
   },
   "dependencies": {
+  },
+  "devDependencies": {
     "@mapbox/mapbox-gl-draw": "^1.2.2",
     "@turf/circle": "^6.3.0",
     "map-promisified": "^0.4.0",
     "mapbox-gl": "^2.1.1",
     "vue": "^3.0.5",
-    "vue-mapbox-geocoder": "^0.2.0"
-  },
-  "devDependencies": {
+    "vue-mapbox-geocoder": "^0.2.0",
     "@vitejs/plugin-vue": "^1.1.4",
     "@vue/compiler-sfc": "^3.0.5",
     "rollup-plugin-css-only": "^3.1.0",
