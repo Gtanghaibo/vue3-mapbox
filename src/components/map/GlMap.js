@@ -116,14 +116,11 @@ export default {
   },
 
   render() {
-    if (!this.$_containerVNode) {
-      this.$_containerVNode = h("div", {
+    return h("div", { class: "mgl-map-wrapper" }, [
+      h("div", {
         id: this.container,
         ref: "container"
-      });
-    }
-    return h("div", { class: "mgl-map-wrapper" }, [
-      this.$_containerVNode,
+      }),
       this.initialized ? (this.$slots.default ? this.$slots.default(): null) : null
     ]);
   }
