@@ -818,6 +818,10 @@ var DrawControl = {
     drawType: {
       type: String,
       default: 'draw_polygon'
+    },
+    theme: {
+      type: Array,
+      default: null
     }
   },
   beforeUnmount() {
@@ -829,6 +833,10 @@ var DrawControl = {
       delete drawConfig.modes; 
     }
     delete drawConfig.drawType;
+    if(this.theme) {
+      drawConfig.styles = this.theme;
+    }
+    delete drawConfig.theme;
     this.control = new MapboxDraw(drawConfig);
     this.$_addControl();
   },
