@@ -17,5 +17,5 @@ export default {
       plugins: [terser()]
     }
   ],
-  plugins: [css({ output: "dist/vue-mapbox.css" })]
+  plugins: [css({ output: "vue-mapbox.css" })]
 };

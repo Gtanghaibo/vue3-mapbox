@@ -15,7 +15,7 @@
       @click="handleClick"
       :lazy="true"
     >
-      <MglDrawControl  @added="handleAddControl" v-if="activeDrawRegion" :draw-type="'draw_line_string'" ></MglDrawControl>
+      <MglDrawControl  @added="handleAddControl" v-if="activeDrawRegion" :draw-type="'draw_line_string'" :theme="theme" ></MglDrawControl>
     <!-- <template v-for="i in 1" >
       <mgl-marker
       :key="i"
@@ -59,6 +59,9 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import PopupWrapper from "./PopupWrapper.vue"
 // import MglGeocoderControl from "vue-mapbox-geocoder";
 import Npc from './Npc.vue'
+import theme from './theme'
+
+console.log('theme',theme)
 
 import {
   MglMap,
@@ -157,6 +160,7 @@ export default {
 
       activeDrawRegion: true,
       drawControlConfig,
+      theme
     };
   },
 
