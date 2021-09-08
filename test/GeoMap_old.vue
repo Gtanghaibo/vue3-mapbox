@@ -337,7 +337,6 @@ export default {
     },
 
     async handleLoad(event) {
-      console.log("MAP: ", event);
 
       const actions = event.component.actions
       // const actions = promisify(event.map);
@@ -370,8 +369,6 @@ export default {
     },
 
     async layerClickHandler(event) {
-      console.log("Evant: ", event)
-      console.log("Evant features: ", event.mapboxEvent.features)
       // const { component, mapboxEvent } = event;
       // const features = component.getRenderedFeatures(mapboxEvent.point);
 
@@ -382,7 +379,6 @@ export default {
     },
 
     async checkAsyncActions(actions, map) {
-      console.log(actions);
       
       // const panByRes = await actions.panBy([30, 40]);
       // console.log("panBy result: ", panByRes);

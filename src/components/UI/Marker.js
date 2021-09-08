@@ -90,13 +90,7 @@ export default {
     // let isVNode = false
     const marker = this.$slots.marker()[0]
     this.$nextTick(() => {
-      console.log(this.markerVnode)
       if (this.$slots.marker) {
-        console.log(this.$slots.marker, this.$slots.marker(),marker, this.$el.children[0])
-        // Todo for vnode which has no el
-        // const firstEle = this.$slots.marker()[0]
-        // isVNode  = firstEle.__v_isVNode
-        // markerOptions.element = this.$slots.marker()[0].el;
         markerOptions.element = this.$el.children[0]
       }
       this.marker = new this.root.mapBox.Marker(markerOptions);

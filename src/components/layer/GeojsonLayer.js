@@ -97,13 +97,6 @@ export default {
         },
         { deep: true }
       );
-      this.$watch(
-        'layer.layout',
-        (value) => {
-          console.log('visibility', value)
-        },
-        {deep: true}
-      )
     }
     this.$_deferredMount();
     setInterval(() => {

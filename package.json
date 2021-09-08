@@ -1,6 +1,6 @@
 {
   "name": "vue3-mapbox",
-  "version": "0.0.14",
+  "version": "0.0.16",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,10 +17,10 @@
     "@turf/circle": "^6.3.0",
     "map-promisified": "^0.4.0",
     "mapbox-gl": "^2.1.1",
-    "vue": "^3.0.5",
     "vue-mapbox-geocoder": "^0.2.0"
   },
   "devDependencies": {
+    "vue": "^3.0.5",
     "@vitejs/plugin-vue": "^1.1.4",
     "@vue/compiler-sfc": "^3.0.5",
     "rollup-plugin-css-only": "^3.1.0",
