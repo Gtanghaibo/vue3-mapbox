@@ -20,13 +20,10 @@ export default {
       default: null
     }
   },
-  beforeUnmount() {
-    this.control.onRemove()
-  },
   created() {
     let drawConfig = Object.assign({}, this.$props)
     if(!this.modes) {
-      delete drawConfig.modes 
+      delete drawConfig.modes
     }
     delete drawConfig.drawType
     if(this.theme) {
