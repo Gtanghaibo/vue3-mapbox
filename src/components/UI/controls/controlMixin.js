@@ -14,7 +14,7 @@ export default {
   },
 
   beforeUnmount() {
-    if (this.map && this.control) {
+    if (this.root.map && this.control) {
       this.root.map.removeControl(this.control);
     }
   },
