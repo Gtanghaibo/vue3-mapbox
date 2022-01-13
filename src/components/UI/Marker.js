@@ -80,6 +80,9 @@ export default {
     },
     rotation(next) {
       this.marker.setRotation(next)
+    },
+    offset(value) {
+      this.marker.setOffset(value)
     }
   },
 
@@ -89,10 +92,12 @@ export default {
     };
     // let isVNode = false
     const marker = this.$slots.marker()[0]
+    debugger
     this.$nextTick(() => {
       if (this.$slots.marker) {
         markerOptions.element = this.$el.children[0]
       }
+      debugger
       this.marker = new this.root.mapBox.Marker(markerOptions);
   
       if (this.$attrs["onUpdate:coordinates"]) {
@@ -124,6 +129,7 @@ export default {
 
   methods: {
     $_addMarker() {
+      console.log('marker',this.marker)
       this.marker.setLngLat(this.coordinates).setRotation(this.rotation).addTo(this.root.map);
       this.$_bindMarkerDOMEvents();
       this.$_emitEvent("added", { marker: this.marker });

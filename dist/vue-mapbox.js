@@ -645,7 +645,7 @@ var controlMixin = {
   },
 
   beforeUnmount() {
-    if (this.map && this.control) {
+    if (this.root.map && this.control) {
       this.root.map.removeControl(this.control);
     }
   },
@@ -824,13 +824,10 @@ var DrawControl = {
       default: null
     }
   },
-  beforeUnmount() {
-    this.control.onRemove();
-  },
   created() {
     let drawConfig = Object.assign({}, this.$props);
     if(!this.modes) {
-      delete drawConfig.modes; 
+      delete drawConfig.modes;
     }
     delete drawConfig.drawType;
     if(this.theme) {
