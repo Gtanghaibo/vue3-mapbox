@@ -1,6 +1,6 @@
 {
   "name": "vue3-mapbox",
-  "version": "0.0.18",
+  "version": "0.0.21",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
