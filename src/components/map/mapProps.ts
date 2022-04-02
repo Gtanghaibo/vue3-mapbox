@@ -1,9 +1,9 @@
-export default {
+import { ExtractPropTypes, PropType } from 'vue'
+import type Mapboxgl from 'mapbox-gl'
+const mapProps = {
   container: {
-    type: [String, HTMLElement],
-    default() {
-      return `map-${("" + Math.random()).split(".")[1]}`;
-    }
+    type: String,
+    default: () => `map-${('' + Math.random()).split('.')[1]}`
   },
   accessToken: {
     type: String,
@@ -18,7 +18,7 @@ export default {
     default: 22
   },
   mapStyle: {
-    type: [String, Object],
+    type: [String, Object] as PropType<string | Mapboxgl.Style>,
     required: true
   },
   hash: {
@@ -41,25 +41,17 @@ export default {
     type: Number,
     default: 3
   },
-  // classes: {
-  //   type: Array,
-  //   default() {
-  //     return []
-  //   }
-  // },
   attributionControl: {
     type: Boolean,
     default: true
   },
   customAttribution: {
-    type: [String, Array],
-    default: null
+    type: [String, Array] as PropType<string | string[]>,
+    default: undefined
   },
   logoPosition: {
-    type: String,
-    default: "bottom-left",
-    validator: val =>
-      ["top-left", "top-right", "bottom-left", "bottom-right"].includes(val)
+    type: String as PropType<'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'>,
+    default: 'bottom-left'
   },
   failIfMajorPerformanceCaveat: {
     type: Boolean,
@@ -74,16 +66,12 @@ export default {
     default: true
   },
   maxBounds: {
-    type: Array,
-    default() {
-      return undefined;
-    }
+    type: [Array, Object] as PropType<Mapboxgl.MapboxOptions['maxBounds']>,
+    default: undefined
   },
   scrollZoom: {
-    type: [Boolean, Object],
-    default() {
-      return true;
-    }
+    type: [Boolean, Object] as PropType<Mapboxgl.MapboxOptions['scrollZoom']>,
+    default: true
   },
   boxZoom: {
     type: Boolean,
@@ -106,17 +94,15 @@ export default {
     default: true
   },
   touchZoomRotate: {
-    type: [Boolean, Object],
-    default() {
-      return true;
-    }
+    type: [Boolean, Object] as PropType<Mapboxgl.MapboxOptions['touchZoomRotate']>,
+    default: true
   },
   trackResize: {
     type: Boolean,
     default: true
   },
   center: {
-    type: [Object, Array],
+    type: [Object, Array] as PropType<Mapboxgl.MapboxOptions['center'] | number[]>,
     default: undefined
   },
   zoom: {
@@ -136,24 +122,16 @@ export default {
     default: 0
   },
   bounds: {
-    type: [Object, Array],
+    type: [Object, Array] as PropType<Mapboxgl.MapboxOptions['bounds']>,
     default: undefined
   },
   fitBoundsOptions: {
-    type: Object,
+    type: Object as PropType<Mapboxgl.MapboxOptions['fitBoundsOptions']>,
     default: undefined
   },
   renderWorldCopies: {
     type: Boolean,
     default: true
-  },
-  RTLTextPluginUrl: {
-    type: String,
-    default: undefined
-  },
-  light: {
-    type: Object,
-    default: undefined
   },
   tileBoundaries: {
     type: Boolean,
@@ -168,12 +146,12 @@ export default {
     default: false
   },
   transformRequest: {
-    type: Function,
-    default: null
+    type: Function as PropType<Mapboxgl.MapboxOptions['transformRequest']>,
+    default: undefined
   },
   maxTileCacheSize: {
     type: Number,
-    default: null
+    default: undefined
   },
   localIdeographFontFamily: {
     type: String,
@@ -191,4 +169,7 @@ export default {
     type: Boolean,
     default: true
   }
-};
+}
+
+export type MapProps = ExtractPropTypes<typeof mapProps>
+export default mapProps

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+    },
+    "strict": true,
+    "strictNullChecks": true,
+    "jsx": "react",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+    "importHelpers": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "module": "ES6",
+    "moduleResolution": "node",
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "target": "ES6",
+    "esModuleInterop": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ]
+  },
+  "include": ["src/**/*.ts", "src/main.ts"]
+}
