@@ -49,13 +49,14 @@ export default defineComponent({
       default: 0
     }
   },
-  emits: ['update:coordinates'],
-  setup(props, { emit, attrs }) {
+  emits: ['update:coordinates', 'added', 'click', 'mouseenter', 'mouseleave', 'drag', 'dragstart', 'dragend'],
+  setup(props, { emit, attrs, slots }) {
     const map = inject(mapKey)!
     const { bindSelfEvents } = useSelfEvents({ emit, attrs, map: map?.value })
-    const { emitEvent, filterPropsEvents } = useMapEvent({ emit, attrs, map: map?.value })
+    const { emitEvent } = useMapEvent({ emit, attrs, map: map?.value })
     const initial = ref(true)
     const marker = ref<Mapboxgl.Marker | null>(null)
+    const markerRef = ref<HTMLElement | null>(null)
 
     // watch
     watch(
@@ -99,18 +100,16 @@ export default defineComponent({
       emitEvent('added', { marker: marker.value })
     }
     function bindMarkerDomEvents() {
-      filterPropsEvents().forEach(key => {
-        if (Object.values(markerDOMEvents).includes(key)) {
-          // @ts-expect-error
-          marker.value?._element.addEventListener(key, event => {
-            emitSelfEvent(event)
-          })
-        }
+      Object.values(markerDOMEvents).forEach(key => {
+        // @ts-expect-error
+        marker.value?._element.addEventListener(key, event => {
+          emitSelfEvent(event)
+        })
       })
     }
 
     function emitSelfEvent(event) {
-      emit(event, { marker: marker.value })
+      emit(event.type, event)
     }
 
     function remove() {
@@ -119,25 +118,31 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      // @ts-expect-error
-      marker.value = new mapboxgl.Marker(props)
-      if (attrs['onUpdate:coordinates']) {
-        marker.value?.on('dragend', event => {
-          let newCoordinates
-          if (props.coordinates instanceof Array) {
-            // @ts-expect-error
-            newCoordinates = [event.target._lngLat.lng, event.target._lngLat.lat]
-          } else {
-            // @ts-expect-error
-            newCoordinates = event.target._lngLat
-          }
-          emit('update:coordinates', newCoordinates)
-        })
+      const markerOptions = {
+        ...props
       }
-      const eventNames = Object.keys(markerEvents)
-      bindSelfEvents(eventNames, marker.value)
-      initial.value = false
       nextTick(() => {
+        if (slots.marker) {
+          ;(markerOptions as Mapboxgl.MarkerOptions).element = markerRef.value?.children?.[0] as HTMLElement
+        }
+        // @ts-expect-error
+        marker.value = new mapboxgl.Marker(markerOptions)
+        if (attrs['onUpdate:coordinates']) {
+          marker.value?.on('dragend', event => {
+            let newCoordinates
+            if (props.coordinates instanceof Array) {
+              // @ts-expect-error
+              newCoordinates = [event.target._lngLat.lng, event.target._lngLat.lat]
+            } else {
+              // @ts-expect-error
+              newCoordinates = event.target._lngLat
+            }
+            emit('update:coordinates', newCoordinates)
+          })
+        }
+        const eventNames = Object.keys(markerEvents)
+        bindSelfEvents(eventNames, marker.value)
+        initial.value = false
         addMarker()
       })
     })
@@ -148,20 +153,14 @@ export default defineComponent({
     })
     return {
       remove,
-      marker
+      marker,
+      markerRef
     }
   },
   render() {
-    return h('div', { style: { display: 'none' } }, [
+    return h('div', { style: { display: 'none' }, ref: 'markerRef' }, [
       this.$slots.marker?.(),
       this.marker ? this.$slots.default?.() : null
     ])
   }
 })
-
-// <template>
-//   <div style="display: none">
-//     <slot />
-//     <slot name="marker" />
-//   </div>
-// </template>

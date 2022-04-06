@@ -6,15 +6,13 @@ interface useSelfEventsReturnType {
 }
 
 export const useSelfEvents = (params: useMapEventParams): useSelfEventsReturnType => {
-  const { emitMapEvent, filterPropsEvents } = useMapEvent(params)
+  const { emitMapEvent } = useMapEvent(params)
   const emitSelfEvent = (event, data = {}): void => {
     emitMapEvent(event, data)
   }
   const bindSelfEvents = (events: string[], emitter): void => {
-    filterPropsEvents().forEach(eventName => {
-      if (events.includes(eventName)) {
-        emitter.on(eventName, emitSelfEvent)
-      }
+    events.forEach(eventName => {
+      emitter.on(eventName, emitSelfEvent)
     })
   }
   const unbindSelfEvents = (events: string[], emitter): void => {

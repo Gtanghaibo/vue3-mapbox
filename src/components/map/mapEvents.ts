@@ -2,6 +2,8 @@ export interface EventItem {
   name: string
 }
 
+// TODO: focus ego是moveend的事件触发太快
+
 const mapEvents: Record<string, EventItem> = {
   resize: { name: 'resize' },
   webglcontextlost: { name: 'webglcontextlost' },

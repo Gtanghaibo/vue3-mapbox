@@ -168,7 +168,8 @@ const mapProps = {
   crossSourceCollisions: {
     type: Boolean,
     default: true
-  }
+  },
+  focusLazy: Boolean
 }
 
 export type MapProps = ExtractPropTypes<typeof mapProps>

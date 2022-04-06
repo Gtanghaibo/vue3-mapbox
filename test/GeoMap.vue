@@ -48,8 +48,8 @@ const zoom = ref(12.5)
 const markerCoordinates = ref([116.46494, 39.95402, ])
 const map = ref<Mapboxgl.Map>()
 
-const handleZoom = () => {
-  console.log(zoom.value)
+const handleZoom = (value) => {
+  console.log('zoom', value)
 }
 
 const handleLoad = ({ map }) => {

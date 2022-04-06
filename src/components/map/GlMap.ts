@@ -34,7 +34,7 @@ export default defineComponent({
     function bindMapEvents(events: string[]): void {
       filterPropsEvents().forEach(eventName => {
         if (events.includes(eventName)) {
-          map.value?.on(eventName, () => emitMapEvent)
+          map.value?.on(eventName, event => emitMapEvent(event))
         }
       })
     }
@@ -43,39 +43,39 @@ export default defineComponent({
         {
           events: ['moveend'],
           prop: 'center',
-          getter: map.value?.getCenter()
+          getter: () => map.value?.getCenter()
         },
         {
           events: ['zoomend'],
           prop: 'zoomend',
-          getter: map.value?.getZoom()
+          getter: () => map.value?.getZoom()
         },
         {
           events: ['zoom'],
           prop: 'zoom',
-          getter: map.value?.getZoom()
+          getter: () => map.value?.getZoom()
         },
         {
           events: ['rotate'],
           prop: 'bearing',
-          getter: map.value?.getBearing()
+          getter: () => map.value?.getBearing()
         },
         {
           events: ['pitch'],
           prop: 'pitch',
-          getter: map.value?.getPitch()
+          getter: () => map.value?.getPitch()
         },
         {
           events: ['moveend', 'zoomend', 'rotate', 'pitch'],
           prop: 'bounds',
-          getter: map.value?.getBounds()
+          getter: () => map.value?.getBounds()
         }
       ]
       syncedProps.forEach(({ events, prop, getter }) => {
         events.forEach(event => {
           if (attrs[`onUpdate:${prop}`] || prop in props) {
             // @ts-expect-error
-            map.value?.on(event, () => emit(`update:${prop}`, getter))
+            map.value?.on(event, () => emit(`update:${prop}`, getter()))
           }
         })
       })
