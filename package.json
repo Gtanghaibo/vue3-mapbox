@@ -17,6 +17,7 @@
   "dependencies": {
     "@mapbox/mapbox-gl-draw": "^1.2.2",
     "@turf/circle": "^6.3.0",
+    "lodash-es": "^4.17.21",
     "mapbox-gl": "^2.1.1",
     "vue-mapbox-geocoder": "^0.2.0"
   },

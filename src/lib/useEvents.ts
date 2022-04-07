@@ -3,7 +3,7 @@ import { SetupContext } from 'vue'
 
 export interface MapEventsType {
   emitEvent: (name: string, data?: any) => void
-  emitMapEvent: (event: Mapboxgl.MapboxEvent, data?: any) => void
+  emitMapEvent: (event: Mapboxgl.MapboxEvent<any>, data?: any) => void
   filterPropsEvents: () => string[]
 }
 
@@ -21,7 +21,7 @@ export const useMapEvent = (params: useMapEventParams): MapEventsType => {
       ...data
     })
   }
-  const emitMapEvent = (event: Mapboxgl.MapboxEvent, data = {}): void => {
+  const emitMapEvent = (event: Mapboxgl.MapboxEvent<any>, data = {}): void => {
     emit(event.type, {
       mapBoxEvent: event,
       ...data

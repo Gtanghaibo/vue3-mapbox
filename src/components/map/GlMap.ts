@@ -7,6 +7,7 @@ import { h, ref, defineComponent, provide, onUnmounted, onMounted } from 'vue'
 import { mapKey, initializedKey } from './types'
 import type Mapboxgl from 'mapbox-gl'
 import mapboxgl from 'mapbox-gl'
+import { debounce } from 'lodash-es'
 
 export default defineComponent({
   name: 'GlMap',
@@ -34,7 +35,14 @@ export default defineComponent({
     function bindMapEvents(events: string[]): void {
       filterPropsEvents().forEach(eventName => {
         if (events.includes(eventName)) {
-          map.value?.on(eventName, event => emitMapEvent(event))
+          if (props.focusLazy && eventName === 'moveend') {
+            map.value?.on(
+              eventName,
+              debounce(event => emitMapEvent(event), props.focusLazyTime)
+            )
+          } else {
+            map.value?.on(eventName, event => emitMapEvent(event))
+          }
         }
       })
     }

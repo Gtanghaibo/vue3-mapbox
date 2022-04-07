@@ -169,7 +169,11 @@ const mapProps = {
     type: Boolean,
     default: true
   },
-  focusLazy: Boolean
+  focusLazy: Boolean,
+  focusLazyTime: {
+    type: Number,
+    default: 1000
+  }
 }
 
 export type MapProps = ExtractPropTypes<typeof mapProps>
