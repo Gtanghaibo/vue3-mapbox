@@ -1,64 +1,66 @@
-const watchers = {
-  maxBounds(next) {
-    this.map.setMaxBounds(next);
-  },
-  minZoom(next) {
-    this.map.setMinZoom(next);
-  },
-  maxZoom(next) {
-    this.map.setMaxZoom(next);
-  },
-  mapStyle(next) {
-    this.map.setStyle(next);
-  },
-  // TODO: make 'bounds' synced prop
-  // bounds (next) { this.map.fitBounds(next, { linear: true, duration: 0 }) },
-  collisionBoxes(next) {
-    this.map.showCollisionBoxes = next;
-  },
-  tileBoundaries(next) {
-    this.map.showTileBoundaries = next;
-  },
-  repaint(next) {
-    this.map.repaint = next;
-  },
-  zoom(next) {
-    this.map.setZoom(next);
-  },
-  center(next, pre) {
-    this.map.setCenter(next);
-  },
-  bearing(next) {
-    this.map.setBearing(next);
-  },
-  pitch(next) {
-    this.map.setPitch(next);
-  },
-  light(next) {
-    this.map.setLigh(next);
-  }
-};
-
-function watcher(prop, callback, next, prev) {
-  if (this.initial) return;
-  if(this.propsIsUpdating[prop]) {
-    this.propsIsUpdating[prop] = false
-    return
-  } else {
-    callback(next, prev)
-  }
-}
-
-function makeWatchers() {
-  const wrappers = {};
-  Object.entries(watchers).forEach(prop => {
-    wrappers[prop[0]] = function(next, prev) {
-      return watcher.call(this, prop[0], prop[1].bind(this), next, prev);
-    };
-  });
-  return wrappers;
-}
-
-export default {
-  watch: makeWatchers()
+import { watch } from 'vue';
+export const useMapWatch = (props, map) => {
+    watch(() => props.maxBounds, (nextVal, preVal) => {
+        var _a;
+        if (preVal === nextVal)
+            return;
+        (_a = map.value) === null || _a === void 0 ? void 0 : _a.setMaxBounds(nextVal);
+    });
+    watch(() => props.minZoom, (nextVal, preVal) => {
+        var _a;
+        if (preVal === nextVal)
+            return;
+        (_a = map.value) === null || _a === void 0 ? void 0 : _a.setMinZoom(nextVal);
+    });
+    watch(() => props.maxZoom, (nextVal, preVal) => {
+        var _a;
+        if (preVal === nextVal)
+            return;
+        (_a = map.value) === null || _a === void 0 ? void 0 : _a.setMaxZoom(nextVal);
+    });
+    watch(() => props.mapStyle, (nextVal, preVal) => {
+        var _a;
+        if (preVal === nextVal || !nextVal)
+            return;
+        (_a = map.value) === null || _a === void 0 ? void 0 : _a.setStyle(nextVal);
+    });
+    watch(() => props.collisionBoxes, (nextVal, preVal) => {
+        if (preVal === nextVal || !map.value)
+            return;
+        map.value.showCollisionBoxes = nextVal;
+    });
+    watch(() => props.tileBoundaries, (nextVal, preVal) => {
+        if (preVal === nextVal || !map.value)
+            return;
+        map.value.showTileBoundaries = nextVal;
+    });
+    watch(() => props.repaint, (nextVal, preVal) => {
+        if (preVal === nextVal || !map.value)
+            return;
+        map.value.repaint = nextVal;
+    });
+    watch(() => props.zoom, (nextVal, preVal) => {
+        var _a;
+        if (preVal === nextVal)
+            return;
+        (_a = map.value) === null || _a === void 0 ? void 0 : _a.setZoom(nextVal);
+    });
+    watch(() => props.center, (nextVal, preVal) => {
+        var _a;
+        if (preVal === nextVal || !nextVal)
+            return;
+        (_a = map.value) === null || _a === void 0 ? void 0 : _a.setCenter(nextVal);
+    });
+    watch(() => props.bearing, (nextVal, preVal) => {
+        var _a;
+        if (preVal === nextVal)
+            return;
+        (_a = map.value) === null || _a === void 0 ? void 0 : _a.setBearing(nextVal);
+    });
+    watch(() => props.pitch, (nextVal, preVal) => {
+        var _a;
+        if (preVal === nextVal)
+            return;
+        (_a = map.value) === null || _a === void 0 ? void 0 : _a.setPitch(nextVal);
+    });
 };

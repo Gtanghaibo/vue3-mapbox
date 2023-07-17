@@ -1,0 +1,10 @@
+node_modules
+dist/
+test
+build/
+/**/*_pb.*
+tests/unit/coverage
+public/**/*.js
+/**/*.md
+tsconfig.json
+package.json
